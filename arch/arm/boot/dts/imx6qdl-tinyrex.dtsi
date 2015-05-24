@@ -210,7 +210,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_hog>;
 
-	imx6qdl-rextiny {
+	imx6qdl-tinyrex {
 		pinctrl_hog: hoggrp {
 			fsl,pins = <
 				MX6QDL_PAD_DISP0_DAT5__GPIO4_IO26	0x80000000 /* Board variant 0 */
