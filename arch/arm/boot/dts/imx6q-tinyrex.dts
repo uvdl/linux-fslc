@@ -12,11 +12,11 @@
 /dts-v1/;
 
 #include "imx6q.dtsi"
-#include "imx6qdl-rextiny.dtsi"
+#include "imx6qdl-tinyrex.dtsi"
 
 / {
-	model = "Fedevel i.MX6 Quad REX Tiny Board";
-	compatible = "fsl,imx6q-rextiny", "fsl,imx6q";
+	model = "Fedevel i.MX6 Quad TinyREX Board";
+	compatible = "fsl,imx6q-tinyrex", "fsl,imx6q";
 
 	memory {
 		reg = <0x10000000 0x80000000>;
