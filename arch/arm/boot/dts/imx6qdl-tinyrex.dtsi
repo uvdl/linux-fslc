@@ -101,7 +101,7 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		reg_usb_otg_vbus: regulator@0 {
+		reg_usb_h0_vbus: regulator@0 {
 			compatible = "regulator-fixed";
 			reg = <0>;
 			regulator-name = "usb_otg_vbus";
@@ -282,7 +282,7 @@
 				MX6QDL_PAD_RGMII_RX_CTL__RGMII_RX_CTL	0x1b0b0
 				MX6QDL_PAD_ENET_TX_EN__GPIO1_IO28	0x80000000 /* PHY Int */
 				MX6QDL_PAD_ENET_RXD1__GPIO1_IO26	0x80000000 /* PHY Int */
-				MX6QDL_PAD_ENET_CRS_DV__GPIO1_IO25	0x80000000 /* PHY Reset */
+				MX6QDL_PAD_ENET_CRS_DV__GPIO1_IO25	0x00000801 /* PHY Reset */
 			>;
 		};
 
@@ -684,7 +684,7 @@
 };
 
 &usbotg {
-	vbus-supply = <&reg_usb_otg_vbus>;
+	vbus-supply = <&reg_usb_h0_vbus>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usbotg>;
 	disable-over-current;
