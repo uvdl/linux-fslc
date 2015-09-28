@@ -23,6 +23,18 @@
 	};
 };
 
+&i2c3 {
+	adv7610: adv7610@4C {
+		compatible = "adv,adv7610";
+		reg = <0x4C>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_ipu1_csi0>;
+		csi_id = <0>;
+		ipu_id = <0>;
+		reset-gpio = <&gpio1 7 0>;
+	};
+};
+
 &mxcfb1 {
 	status = "okay";
 };
