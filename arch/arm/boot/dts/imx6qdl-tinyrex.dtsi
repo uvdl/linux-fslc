@@ -120,6 +120,15 @@
 			gpio = <&gpio1 4 0>;
 			enable-active-high;
 		};
+
+		reg_3p3v: 3p3v {
+			compatible = "regulator-fixed";
+			reg = <2>;
+			regulator-name = "3P3V";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			regulator-always-on;
+		};
 	};
 
 	sound-hdmi {
@@ -142,6 +151,8 @@
 		ipu_id = <0>;
 		csi_id = <1>;
 		mclk_source = <0>;
+		mipi_camera = <1>;
+		default_input = <1>;
 		status = "okay";
 	};
 
@@ -328,12 +339,12 @@
 
 		pinctrl_ipu1_disp0: ipu1_disp0grp {
 			fsl,pins = <
-				MX6QDL_PAD_EIM_A16__IPU1_DI1_DISP_CLK	0x10
+				//MX6QDL_PAD_EIM_A16__IPU1_DI1_DISP_CLK	0x10 /* RPI Camera LED */
 				MX6QDL_PAD_EIM_BCLK__IPU1_DI1_PIN16	0x10 /* WRX */
 				MX6QDL_PAD_EIM_LBA__IPU1_DI1_PIN17	0x10 /* RDX */
 				MX6QDL_PAD_EIM_DA13__IPU1_DI1_D0_CS	0x80000000
 				MX6QDL_PAD_EIM_DA14__IPU1_DI1_D1_CS	0x80000000
-				MX6QDL_PAD_EIM_DA10__IPU1_DI1_PIN15	0x10 /* D/CX */
+				//MX6QDL_PAD_EIM_DA10__IPU1_DI1_PIN15	0x10 /* RPI Camera PWR */
 				MX6QDL_PAD_EIM_DA11__IPU1_DI1_PIN02	0x10 /* HSYNC */
 				MX6QDL_PAD_EIM_DA12__IPU1_DI1_PIN03	0x10 /* VSYNC */
 				MX6QDL_PAD_EIM_DA15__IPU1_DI1_PIN04	0x80000000 /* Rst */
@@ -396,6 +407,13 @@
 			>;
 		};
 
+		pinctrl_ov5647_mipi: ov5647_mipigrp {
+			fsl,pins = <
+				MX6QDL_PAD_EIM_DA10__GPIO3_IO10		0x17059 /* RPI Camera PWR */
+				MX6QDL_PAD_EIM_A16__GPIO2_IO22		0x13059 /* RPI Camera LED */
+			>;
+		};
+
 		pinctrl_leds: ledsgrp {
 			fsl,pins = <
 				MX6QDL_PAD_GPIO_2__GPIO1_IO02 		0x80000000 /* Module */
@@ -412,7 +430,7 @@
 		pinctrl_pcie: pciegrp {
 			fsl,pins = <
 				MX6QDL_PAD_GPIO_17__GPIO7_IO12      	0x17059 /* Wake */
-				MX6QDL_PAD_EIM_A25__GPIO5_IO02		0x80000000 /* Reset */
+				MX6QDL_PAD_EIM_A25__GPIO5_IO02		0x00000831 /* Reset */
 			>;
 		};
 
@@ -533,7 +551,7 @@
 &flexcan1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_flexcan1>;
-	status = "disabled";
+	status = "okay";
 };
 
 &gpc {
@@ -615,6 +633,7 @@
 	csi_id = <1>;
 	v_channel = <0>;
 	lanes = <2>;
+	mipi_dphy_clk = <0x28>;
 	status = "okay";
 };
 
@@ -634,13 +653,13 @@
 &pwm1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pwm1>;
-	status = "disabled";
+	status = "okay";
 };
 
 &pwm2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pwm2>;
-	status = "disabled";
+	status = "okay";
 };
 
 &ssi2 {
@@ -657,25 +676,25 @@
 &uart2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart2>;
-	status = "disabled";
+	status = "okay";
 };
 
 &uart3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart3>;
-	status = "disabled";
+	status = "okay";
 };
 
 &uart4 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart4>;
-	status = "disabled";
+	status = "okay";
 };
 
 &uart5 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart5>;
-	status = "disabled";
+	status = "okay";
 };
 
 &usbh1 {

@@ -129,11 +129,6 @@ static int csi_enc_setup(cam_data *cam)
 	ipu_channel_params_t params;
 	u32 pixel_fmt;
 	int err = 0, sensor_protocol = 0;
-#ifdef CONFIG_MXC_MIPI_CSI2
-	void *mipi_csi2_info;
-	int ipu_id;
-	int csi_id;
-#endif
 
 	if (!cam) {
 		printk(KERN_ERR "cam private is NULL\n");
@@ -161,36 +156,9 @@ static int csi_enc_setup(cam_data *cam)
 		printk(KERN_ERR "sensor protocol unsupported\n");
 		return -EINVAL;
 	}
-
-#ifdef CONFIG_MXC_MIPI_CSI2
-	mipi_csi2_info = mipi_csi2_get_info();
-
-	if (mipi_csi2_info) {
-		if (mipi_csi2_get_status(mipi_csi2_info)) {
-			ipu_id = mipi_csi2_get_bind_ipu(mipi_csi2_info);
-			csi_id = mipi_csi2_get_bind_csi(mipi_csi2_info);
-
-			if (cam->ipu == ipu_get_soc(ipu_id)
-				&& cam->csi == csi_id) {
-				params.csi_mem.mipi_en = true;
-				params.csi_mem.mipi_vc =
-				mipi_csi2_get_virtual_channel(mipi_csi2_info);
-				params.csi_mem.mipi_id =
-				mipi_csi2_get_datatype(mipi_csi2_info);
-
-				mipi_csi2_pixelclk_enable(mipi_csi2_info);
-			} else {
-				params.csi_mem.mipi_en = false;
-				params.csi_mem.mipi_vc = 0;
-				params.csi_mem.mipi_id = 0;
-			}
-		} else {
-			params.csi_mem.mipi_en = false;
-			params.csi_mem.mipi_vc = 0;
-			params.csi_mem.mipi_id = 0;
-		}
-	}
-#endif
+	err = cam_mipi_csi2_enable(cam, &params.csi_mem.mipi_id, &params.csi_mem.mipi_vc, &params.csi_mem.mipi_en);
+	if (err)
+		return err;
 
 	if (cam->vf_bufs_vaddr[0]) {
 		dma_free_coherent(0, cam->vf_bufs_size[0],
@@ -230,9 +198,9 @@ static int csi_enc_setup(cam_data *cam)
 	}
 	pr_debug("vf_bufs %x %x\n", cam->vf_bufs[0], cam->vf_bufs[1]);
 
-	err = ipu_init_channel(cam->ipu, CSI_MEM, &params);
-	if (err != 0) {
-		printk(KERN_ERR "ipu_init_channel %d\n", err);
+	err = ipu_channel_request(cam->ipu, CSI_MEM, &params, &cam->ipu_chan);
+	if (err) {
+		pr_err("%s:ipu_channel_request %d\n", __func__, err);
 		goto out_1;
 	}
 
@@ -379,37 +347,19 @@ static int bg_overlay_start(void *private)
 static int bg_overlay_stop(void *private)
 {
 	int err = 0;
+	int err2 = 0;
 	cam_data *cam = (cam_data *) private;
-#ifdef CONFIG_MXC_MIPI_CSI2
-	void *mipi_csi2_info;
-	int ipu_id;
-	int csi_id;
-#endif
 
 	if (cam->overlay_active == false)
 		return 0;
 
-	err = ipu_disable_channel(cam->ipu, CSI_MEM, true);
+	err = ipu_channel_disable(cam->ipu_chan, true);
 
-	ipu_uninit_channel(cam->ipu, CSI_MEM);
+	ipu_channel_free(&cam->ipu_chan);
 
 	csi_buffer_num = 0;
 
-#ifdef CONFIG_MXC_MIPI_CSI2
-	mipi_csi2_info = mipi_csi2_get_info();
-
-	if (mipi_csi2_info) {
-		if (mipi_csi2_get_status(mipi_csi2_info)) {
-			ipu_id = mipi_csi2_get_bind_ipu(mipi_csi2_info);
-			csi_id = mipi_csi2_get_bind_csi(mipi_csi2_info);
-
-			if (cam->ipu == ipu_get_soc(ipu_id)
-				&& cam->csi == csi_id)
-				mipi_csi2_pixelclk_disable(mipi_csi2_info);
-		}
-	}
-#endif
-
+	err2 = cam_mipi_csi2_disable(cam);
 	flush_work(&cam->csi_work_struct);
 	cancel_work_sync(&cam->csi_work_struct);
 
@@ -441,7 +391,7 @@ static int bg_overlay_stop(void *private)
 	}
 
 	cam->overlay_active = false;
-	return err;
+	return err ? err : err2;
 }
 
 /*!
@@ -452,9 +402,7 @@ static int bg_overlay_stop(void *private)
  */
 static int bg_overlay_enable_csi(void *private)
 {
-	cam_data *cam = (cam_data *) private;
-
-	return ipu_enable_csi(cam->ipu, cam->csi);
+	return cam_ipu_enable_csi((cam_data *)private);
 }
 
 /*!
@@ -471,8 +419,7 @@ static int bg_overlay_disable_csi(void *private)
 	 * when disable csi, wait for idmac eof.
 	 * it requests eof irq again */
 	ipu_free_irq(cam->ipu, IPU_IRQ_CSI0_OUT_EOF, cam);
-
-	return ipu_disable_csi(cam->ipu, cam->csi);
+	return cam_ipu_disable_csi(cam);
 }
 
 /*!
