@@ -3725,6 +3725,11 @@ static int ov5647_probe(struct i2c_client *client,
  */
 static int ov5647_remove(struct i2c_client *client)
 {
+	struct device *dev = &client->dev;
+
+	device_remove_file(dev, &dev_attr_ov5647_mode);
+ 	device_remove_file(dev, &dev_attr_ov5647_reg);
+
 	v4l2_int_device_unregister(&ov5647_int_device);
 
 	if (gpo_regulator)
