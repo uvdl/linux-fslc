@@ -31,7 +31,7 @@
 		DOVDD-supply = <&reg_3p3v>;
 		AVDD-supply = <&reg_3p3v>;
 		DVDD-supply = <&reg_3p3v>;
-		pwn-gpios = <&gpio3 10 GPIO_ACTIVE_LOW>;
+		pwn-gpios = <&gpio3 10 GPIO_ACTIVE_HIGH>;
 		led-gpios = <&gpio2 22 GPIO_ACTIVE_HIGH>;
 		ipu_id = <0>;
 		csi_id = <1>;
