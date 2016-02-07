@@ -1625,8 +1625,6 @@ static int mxc_v4l2_s_param(cam_data *cam, struct v4l2_streamparm *parm)
 #endif
 	setup_ifparm(cam, 0);
 
-
-
 exit:
 	if (cam->overlay_on == true)
 		start_preview(cam);
