@@ -1813,7 +1813,8 @@ static void mxc_hdmi_edid_rebuild_modelist(struct mxc_hdmi *hdmi)
 		 */
 		mode = &hdmi->fbi->monspecs.modedb[i];
 
-		if (mxc_edid_mode_to_vic(mode) != 0) {
+		if (!(mode->vmode & FB_VMODE_INTERLACED) &&
+				(mxc_edid_mode_to_vic(mode) != 0)) {
 
 			dev_dbg(&hdmi->pdev->dev, "Added mode %d:", i);
 			dev_dbg(&hdmi->pdev->dev,
@@ -1856,7 +1857,7 @@ static void  mxc_hdmi_default_modelist(struct mxc_hdmi *hdmi)
 	/*Add all no interlaced CEA mode to default modelist */
 	for (i = 0; i < ARRAY_SIZE(mxc_cea_mode); i++) {
 		mode = &mxc_cea_mode[i];
-		if (mode->xres != 0)
+		if (!(mode->vmode & FB_VMODE_INTERLACED) && (mode->xres != 0))
 			fb_add_videomode(mode, &hdmi->fbi->modelist);
 	}
 
@@ -2590,7 +2591,7 @@ static int mxc_hdmi_disp_init(struct mxc_dispdrv_handle *disp,
 	/*Add all no interlaced CEA mode to default modelist */
 	for (i = 0; i < ARRAY_SIZE(mxc_cea_mode); i++) {
 		mode = &mxc_cea_mode[i];
-		if (mode->xres != 0)
+		if (!(mode->vmode & FB_VMODE_INTERLACED) && (mode->xres != 0))
 			fb_add_videomode(mode, &hdmi->fbi->modelist);
 	}
 
