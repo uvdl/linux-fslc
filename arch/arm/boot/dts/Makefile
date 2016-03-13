@@ -153,12 +153,15 @@ dtb-$(CONFIG_ARCH_MXC) += \
 	imx53-mba53.dtb \
 	imx53-qsb.dtb \
 	imx53-smd.dtb \
-	imx6s-tinyrex.dtb \
-	imx6-tinyrexlite.dtb \
+	imx6-rexbasic.dtb \
+	imx6-rexpro.dtb \
 	imx6-tinyrexbasic.dtb \
+	imx6-tinyrexlite.dtb \
+	imx6-tinyrexmax.dtb \
+	imx6-tinyrexpro.dtb \
 	imx6dl-cubox-i.dtb \
 	imx6dl-hummingboard.dtb \
-	imx6dl-tinyrex.dtb \
+	imx6dl-rex.dtb \
 	imx6dl-sabreauto.dtb \
 	imx6dl-sabreauto-flexcan1.dtb \
 	imx6dl-sabreauto-ecspi.dtb \
@@ -168,13 +171,11 @@ dtb-$(CONFIG_ARCH_MXC) += \
 	imx6dl-sabresd-ldo.dtb \
 	imx6dl-sabresd-pf200.dtb \
 	imx6dl-sabresd-hdcp.dtb \
+	imx6dl-tinyrex.dtb \
 	imx6dl-wandboard.dtb \
-	imx6-tinyrexpro.dtb \
 	imx6q-arm2.dtb \
 	imx6q-cubox-i.dtb \
 	imx6q-phytec-pbab01.dtb \
-	imx6q-tinyrex.dtb \
-	imx6-tinyrexmax.dtb \
 	imx6q-sabreauto.dtb \
 	imx6q-sabreauto-flexcan1.dtb \
 	imx6q-sabreauto-ecspi.dtb \
@@ -187,6 +188,7 @@ dtb-$(CONFIG_ARCH_MXC) += \
 	imx6q-sabresd-hdcp.dtb \
 	imx6q-sabresd-ldo.dtb \
 	imx6q-sbc6x.dtb \
+	imx6q-tinyrex.dtb \
 	imx6q-udoo.dtb \
 	imx6q-wandboard.dtb \
 	imx6sl-evk.dtb \
@@ -211,6 +213,7 @@ dtb-$(CONFIG_ARCH_MXC) += \
 	imx6sx-sabreauto.dtb \
 	imx6sx-sabreauto-m4.dtb \
 	imx6sx-sdb-lcdif1.dtb \
+	imx6s-tinyrex.dtb \
 	vf610-cosmic.dtb \
 	imx6sx-sdb-emmc.dtb \
 	imx6sx-sdb-m4.dtb \
