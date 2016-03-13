@@ -35,10 +35,6 @@
 	status = "okay";
 };
 
-&sata {
-	status = "disabled";
-};
-
 &usdhc3 {
 	status = "okay";
 };
