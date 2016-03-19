@@ -49,8 +49,38 @@
 	};
 };
 
+&i2c2 {
+	status = "okay";
+
+	touchscreen: tsc2007@48 {
+		compatible = "ti,tsc2007";
+		reg = <0x48>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_tsc2007>;
+		interrupt-parent = <&gpio6>;
+		interrupts = <9 1>;
+		gpios = <&gpio6 9 1>;
+		ti,x-plate-ohms = <500>;
+	};
+
+	hdmi: edid@50 {
+		compatible = "fsl,imx6-hdmi-i2c";
+		reg = <0x50>;
+	};
+};
+
 &i2c3 {
 	status = "okay";
+};
+
+&ldb {
+	lvds-channel@0 {
+		crtc = "ipu1-di0";
+	};
+
+	lvds-channel@1 {
+		crtc = "ipu1-di1";
+	};
 };
 
 &mxcfb1 {

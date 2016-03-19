@@ -171,12 +171,7 @@
 	clock-frequency = <100000>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_i2c2>;
-	status = "okay";
-
-	hdmi: edid@50 {
-		compatible = "fsl,imx6-hdmi-i2c";
-		reg = <0x50>;
-	};
+	status = "disabled";
 };
 
 &i2c3 {
@@ -195,7 +190,7 @@
 			fsl,pins = <
 				MX6QDL_PAD_EIM_A17__GPIO2_IO21		0x80000000 /* Board variant 0 */
 				MX6QDL_PAD_EIM_A16__GPIO2_IO22		0x80000000 /* Board variant 1 */
-				MX6QDL_PAD_EIM_A25__GPIO5_IO02		0x80000000 /* RSTOUT */
+//				MX6QDL_PAD_EIM_A25__GPIO5_IO02		0x00000831 /* RSTOUT */
 				MX6QDL_PAD_EIM_D22__GPIO3_IO22	 	0x80000000 /* USB0 Pwr */
 				MX6QDL_PAD_EIM_D31__GPIO3_IO31		0x80000000 /* USB1 Pwr */
 				MX6QDL_PAD_DISP0_DAT8__WDOG1_B		0x80000000 /* WDOG */
@@ -296,7 +291,7 @@
 		pinctrl_pcie: pciegrp {
 			fsl,pins = <
 				MX6QDL_PAD_CSI0_DATA_EN__GPIO5_IO20	0x17059 /* Wake */
-				MX6QDL_PAD_EIM_A25__GPIO5_IO02		0x00000831 /* Reset */
+				MX6QDL_PAD_EIM_A25__GPIO5_IO02		0x00831 /* Reset */
 			>;
 		};
 
@@ -372,6 +367,12 @@
 				MX6QDL_PAD_NANDF_D0__GPIO2_IO00		0x80000000 /* CD */
 			>;
 		};
+
+		pinctrl_tsc2007: tsc2007grp {
+			fsl,pins = <
+				MX6QDL_PAD_NANDF_WP_B__GPIO6_IO09	0x00831 /* INT */
+			>;
+		};
 	};
 };
 
@@ -410,16 +411,17 @@
 };
 
 &ldb {
-	status = "disabled";
+	status = "okay";
 
 	lvds-channel@0 {
 		fsl,data-mapping = "spwg";
 		fsl,data-width = <18>;
+		primary;
 		status = "okay";
 
 		display-timings {
 			native-mode = <&timing0>;
-			timing0: etv570 {
+			timing0: edt570 {
 				clock-frequency = <25175000>;
 				hactive = <640>;
 				vactive = <480>;
@@ -444,16 +446,20 @@
 
 		display-timings {
 			native-mode = <&timing1>;
-			timing1: hsd100pxn1 {
-				clock-frequency = <65000000>;
-				hactive = <1024>;
-				vactive = <768>;
-				hback-porch = <220>;
-				hfront-porch = <40>;
-				vback-porch = <21>;
-				vfront-porch = <7>;
-				hsync-len = <60>;
-				vsync-len = <10>;
+			timing1: edt570 {
+				clock-frequency = <25175000>;
+				hactive = <640>;
+				vactive = <480>;
+				hback-porch = <114>;
+				hfront-porch = <16>;
+				vback-porch = <32>;
+				vfront-porch = <10>;
+				hsync-len = <30>;
+				vsync-len = <3>;
+				hsync-active = <0>;
+				vsync-active = <0>;
+				de-active = <1>;
+				pixelclk-active = <1>;
 			};
 		};
 	};
