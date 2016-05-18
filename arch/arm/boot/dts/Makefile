@@ -155,10 +155,12 @@ dtb-$(CONFIG_ARCH_MXC) += \
 	imx53-smd.dtb \
 	imx6-rexbasic.dtb \
 	imx6-rexpro.dtb \
+	imx6-rexultra.dtb \
 	imx6-tinyrexbasic.dtb \
 	imx6-tinyrexlite.dtb \
 	imx6-tinyrexmax.dtb \
 	imx6-tinyrexpro.dtb \
+	imx6-tinyrexultra.dtb \
 	imx6dl-cubox-i.dtb \
 	imx6dl-hummingboard.dtb \
 	imx6dl-rex.dtb \
