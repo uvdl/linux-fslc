@@ -254,6 +254,11 @@ dtb-$(CONFIG_SOC_IMX53) += \
 	imx53-tx53-x13x.dtb \
 	imx53-voipac-bsb.dtb
 dtb-$(CONFIG_SOC_IMX6Q) += \
+	imx6-tinyrexbasic.dtb \
+	imx6-tinyrexlite.dtb \
+	imx6-tinyrexmax.dtb \
+	imx6-tinyrexpro.dtb \
+	imx6-tinyrexultra.dtb \
 	imx6dl-aristainetos_4.dtb \
 	imx6dl-aristainetos_7.dtb \
 	imx6dl-cubox-i.dtb \
