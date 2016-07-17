@@ -1,0 +1,83 @@
+/*
+ * Copyright (C) 2015-2016 Voipac.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/dts-v1/;
+
+#include "imx6q.dtsi"
+#include "imx6qdl-tinyrex.dtsi"
+
+/ {
+	model = "Fedevel i.MX6 Quad TinyREX Board";
+	compatible = "fsl,imx6q-tinyrex", "fsl,imx6q";
+
+	memory: memory {
+		reg = <0x10000000 0x40000000>;
+	};
+};
+
+&i2c2 {
+	/* Raspberry Pi camera rev 1.3 */
+	ov5647_mipi: ov5647_mipi@36 {
+		compatible = "ovti,ov5647_mipi";
+		reg = <0x36>;
+		/* Pi camera has its own 25MHz clock. */
+		clocks = <&clks 0>;
+		clock-names = "csi_mclk";
+		DOVDD-supply = <&reg_3p3v>;
+		AVDD-supply = <&reg_3p3v>;
+		DVDD-supply = <&reg_3p3v>;
+		pwn-gpios = <&gpio3 10 GPIO_ACTIVE_HIGH>;
+		led-gpios = <&gpio2 22 GPIO_ACTIVE_HIGH>;
+		ipu_id = <0>;
+		csi_id = <1>;
+		mclk = <25000000>;
+		mclk_source = <0>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_ov5647_mipi>;
+		extended-buffer;
+	};
+};
+
+&i2c3 {
+	adv7610: adv7610@4c {
+		compatible = "adv,adv7610";
+		reg = <0x4c>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_ipu1_csi0>;
+		csi_id = <0>;
+		ipu_id = <0>;
+		reset-gpio = <&gpio1 7 GPIO_ACTIVE_HIGH>;
+	};
+};
+
+&mxcfb1 {
+	status = "okay";
+};
+
+&mxcfb2 {
+	status = "disabled";
+};
+
+&mxcfb3 {
+	status = "disabled";
+};
+
+&mxcfb4 {
+	status = "disabled";
+};
+
+&sata {
+	status = "okay";
+};
+
+&usdhc3 {
+	status = "okay";
+};
