@@ -12,8 +12,8 @@
 /dts-v1/;
 
 #include "imx6q.dtsi"
-#include "imx6qdl-tinyrex.dtsi"
 #include "imx6qp.dtsi"
+#include "imx6qdl-tinyrex.dtsi"
 
 / {
 	model = "Fedevel i.MX6 Quad Plus TinyREX Board";
