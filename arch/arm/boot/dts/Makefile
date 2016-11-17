@@ -254,6 +254,9 @@ dtb-$(CONFIG_SOC_IMX53) += \
 	imx53-tx53-x13x.dtb \
 	imx53-voipac-bsb.dtb
 dtb-$(CONFIG_SOC_IMX6Q) += \
+	imx6-rexbasic.dtb \
+	imx6-rexpro.dtb \
+	imx6-rexultra.dtb \
 	imx6-tinyrexbasic.dtb \
 	imx6-tinyrexlite.dtb \
 	imx6-tinyrexmax.dtb \

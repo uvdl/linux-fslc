@@ -16,7 +16,7 @@
 #include "imx6qdl-tinyrex.dtsi"
 
 / {
-	model = "Fedevel i.MX6 Quad Plus TinyREX Board";
+	model = "Fedevel i.MX6 QuadPlus TinyREX Board";
 	compatible = "fsl,imx6q-tinyrex", "fsl,imx6q";
 
 	memory: memory {
@@ -98,6 +98,10 @@
 
 &prg2 {
 	memory-region = <&memory>;
+	status = "okay";
+};
+
+&pcie {
 	status = "okay";
 };
 

@@ -74,6 +74,10 @@
 	status = "disabled";
 };
 
+&pcie {
+	status = "okay";
+};
+
 &sata {
 	status = "okay";
 };
