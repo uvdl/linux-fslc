@@ -1,0 +1,110 @@
+/*
+ * Copyright (C) 2015-2017 Voipac.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/dts-v1/;
+
+#include "imx6q.dtsi"
+#include "imx6qdl-rex.dtsi"
+
+/ {
+	model = "Fedevel i.MX6 Dual REX Board";
+	compatible = "fsl,imx6q-rex", "fsl,imx6q";
+
+	memory: memory {
+		reg = <0x10000000 0x20000000>;
+	};
+};
+
+&i2c1 {
+	status = "disabled";
+
+	codec: sgtl5000@0a {
+		compatible = "fsl,sgtl5000";
+		reg = <0x0a>;
+		clocks = <&clks 201>;
+		VDDA-supply = <&reg_3p3v>;
+		VDDIO-supply = <&reg_3p3v>;
+	};
+};
+
+&i2c2 {
+	status = "okay";
+
+	touchscreen: tsc2007@48 {
+		compatible = "ti,tsc2007";
+		reg = <0x48>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_tsc2007>;
+		interrupt-parent = <&gpio6>;
+		interrupts = <9 8>;
+		gpios = <&gpio6 9 1>;
+		ti,x-plate-ohms = <500>;
+	};
+
+	hdmi: edid@50 {
+		compatible = "fsl,imx6-hdmi-i2c";
+		reg = <0x50>;
+	};
+};
+
+&i2c3 {
+	status = "disabled";
+};
+
+&ldb {
+	lvds-channel@0 {
+		crtc = "ipu1-di0";
+	};
+
+	lvds-channel@1 {
+		crtc = "ipu1-di1";
+	};
+};
+
+&mxcfb1 {
+	status = "okay";
+};
+
+&mxcfb2 {
+	status = "disabled";
+};
+
+&mxcfb3 {
+	status = "disabled";
+};
+
+&mxcfb4 {
+	status = "disabled";
+};
+
+&pcie {
+	status = "disabled";
+};
+
+&sata {
+	status = "disabled";
+};
+
+&uart2 {
+	status = "disabled";
+};
+
+&usbh1 {
+	status = "disabled";
+};
+
+&usdhc2 {
+	status = "disabled";
+};
+
+&usdhc3 {
+	status = "okay";
+};
