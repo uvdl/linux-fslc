@@ -587,6 +587,12 @@ struct ipu_soc;
 struct ipu_soc *ipu_get_soc(int id);
 int32_t ipu_init_channel(struct ipu_soc *ipu, ipu_channel_t channel, ipu_channel_params_t *params);
 void ipu_uninit_channel(struct ipu_soc *ipu, ipu_channel_t channel);
+
+struct ipu_chan;
+int32_t ipu_channel_request(struct ipu_soc *ipu, ipu_channel_t channel, ipu_channel_params_t *params, struct ipu_chan **p_ipu_chan);
+void ipu_channel_free(struct ipu_chan **p_ipu_chan);
+int32_t ipu_channel_disable(struct ipu_chan *ipu_chan, bool wait_for_stop);
+
 void ipu_disable_hsp_clk(struct ipu_soc *ipu);
 
 static inline bool ipu_can_rotate_in_place(ipu_rotate_mode_t rot)
@@ -731,6 +737,9 @@ void ipu_csi_get_window_size(struct ipu_soc *ipu, uint32_t *width, uint32_t *hei
 void ipu_csi_set_window_size(struct ipu_soc *ipu, uint32_t width, uint32_t height, uint32_t csi);
 
 void ipu_csi_set_window_pos(struct ipu_soc *ipu, uint32_t left, uint32_t top, uint32_t csi);
+
+void ipu_csi_window_size_crop(struct ipu_soc *ipu, uint32_t swidth, uint32_t sheight,
+		uint32_t width, uint32_t height, uint32_t left, uint32_t top, uint32_t csi);
 
 uint32_t bytes_per_pixel(uint32_t fmt);
 

@@ -113,6 +113,7 @@ enum v4l2_if_type {
 	 * on certain image sensors.
 	 */
 	V4L2_IF_TYPE_BT656,
+	V4L2_IF_TYPE_BT1120_PROGRESSIVE_SDR,
 };
 
 enum v4l2_if_type_bt656_mode {

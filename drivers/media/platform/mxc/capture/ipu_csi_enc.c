@@ -70,11 +70,12 @@ static int csi_enc_setup(cam_data *cam)
 	int err = 0, sensor_protocol = 0;
 	dma_addr_t dummy = cam->dummy_frame.buffer.m.offset;
 	ipu_channel_t chan = (cam->csi == 0) ? CSI_MEM0 : CSI_MEM1;
-#ifdef CONFIG_MXC_MIPI_CSI2
-	void *mipi_csi2_info;
-	int ipu_id;
-	int csi_id;
-#endif
+//#ifdef CONFIG_MXC_MIPI_CSI2
+//	void *mipi_csi2_info;
+//	int ipu_id;
+//	int csi_id;
+//#endif
+	struct v4l2_format cam_fmt;
 
 	CAMERA_TRACE("In csi_enc_setup\n");
 	if (!cam) {
@@ -111,7 +112,14 @@ static int csi_enc_setup(cam_data *cam)
 	else if (cam->v2f.fmt.pix.pixelformat == V4L2_PIX_FMT_YUV422P)
 		pixel_fmt = IPU_PIX_FMT_YUV422P;
 	else if (cam->v2f.fmt.pix.pixelformat == V4L2_PIX_FMT_UYVY)
-		pixel_fmt = IPU_PIX_FMT_UYVY;
+	{
+		cam_fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+		vidioc_int_g_fmt_cap(cam->sensor, &cam_fmt);
+		if (cam_fmt.fmt.pix.pixelformat == IPU_PIX_FMT_GENERIC_16)
+			pixel_fmt = cam_fmt.fmt.pix.pixelformat;
+		else
+			pixel_fmt = IPU_PIX_FMT_UYVY;
+	}
 	else if (cam->v2f.fmt.pix.pixelformat == V4L2_PIX_FMT_YUYV)
 		pixel_fmt = IPU_PIX_FMT_YUYV;
 	else if (cam->v2f.fmt.pix.pixelformat == V4L2_PIX_FMT_NV12)
@@ -126,44 +134,19 @@ static int csi_enc_setup(cam_data *cam)
 		pixel_fmt = IPU_PIX_FMT_BGR32;
 	else if (cam->v2f.fmt.pix.pixelformat == V4L2_PIX_FMT_RGB32)
 		pixel_fmt = IPU_PIX_FMT_RGB32;
+	else if (cam->v2f.fmt.pix.pixelformat == V4L2_PIX_FMT_SBGGR8)
+		pixel_fmt = IPU_PIX_FMT_GENERIC;
 	else {
 		printk(KERN_ERR "format not supported\n");
 		return -EINVAL;
 	}
+	err = cam_mipi_csi2_enable(cam, &params.csi_mem.mipi_id, &params.csi_mem.mipi_vc, &params.csi_mem.mipi_en);
+	if (err)
+		return err;
 
-#ifdef CONFIG_MXC_MIPI_CSI2
-	mipi_csi2_info = mipi_csi2_get_info();
-
-	if (mipi_csi2_info) {
-		if (mipi_csi2_get_status(mipi_csi2_info)) {
-			ipu_id = mipi_csi2_get_bind_ipu(mipi_csi2_info);
-			csi_id = mipi_csi2_get_bind_csi(mipi_csi2_info);
-
-			if (cam->ipu == ipu_get_soc(ipu_id)
-				&& cam->csi == csi_id) {
-				params.csi_mem.mipi_en = true;
-				params.csi_mem.mipi_vc =
-				mipi_csi2_get_virtual_channel(mipi_csi2_info);
-				params.csi_mem.mipi_id =
-				mipi_csi2_get_datatype(mipi_csi2_info);
-
-				mipi_csi2_pixelclk_enable(mipi_csi2_info);
-			} else {
-				params.csi_mem.mipi_en = false;
-				params.csi_mem.mipi_vc = 0;
-				params.csi_mem.mipi_id = 0;
-			}
-		} else {
-			params.csi_mem.mipi_en = false;
-			params.csi_mem.mipi_vc = 0;
-			params.csi_mem.mipi_id = 0;
-		}
-	}
-#endif
-
-	err = ipu_init_channel(cam->ipu, chan, &params);
-	if (err != 0) {
-		printk(KERN_ERR "ipu_init_channel %d\n", err);
+	err = ipu_channel_request(cam->ipu, chan, &params, &cam->ipu_chan);
+	if (err) {
+		pr_err("%s:ipu_channel_request %d\n", __func__, err);
 		return err;
 	}
 
@@ -244,18 +227,29 @@ static int csi_enc_enabling_tasks(void *private)
 
 	CAMERA_TRACE("IPU:In csi_enc_enabling_tasks\n");
 
-	cam->dummy_frame.vaddress = dma_alloc_coherent(0,
-			       PAGE_ALIGN(cam->v2f.fmt.pix.sizeimage),
-			       &cam->dummy_frame.paddress,
-			       GFP_DMA | GFP_KERNEL);
-	if (cam->dummy_frame.vaddress == 0) {
-		pr_err("ERROR: v4l2 capture: Allocate dummy frame "
-		       "failed.\n");
-		return -ENOBUFS;
+	if (cam->dummy_frame.vaddress &&
+		cam->dummy_frame.buffer.length
+		< PAGE_ALIGN(cam->v2f.fmt.pix.sizeimage)) {
+		dma_free_coherent(0, cam->dummy_frame.buffer.length,
+				  cam->dummy_frame.vaddress,
+				  cam->dummy_frame.paddress);
+		cam->dummy_frame.vaddress = 0;
+	}
+
+	if (!cam->dummy_frame.vaddress) {
+		cam->dummy_frame.vaddress = dma_alloc_coherent(0,
+				       PAGE_ALIGN(cam->v2f.fmt.pix.sizeimage),
+				       &cam->dummy_frame.paddress,
+				       GFP_DMA | GFP_KERNEL);
+		if (cam->dummy_frame.vaddress == 0) {
+			pr_err("ERROR: v4l2 capture: Allocate dummy frame "
+			       "failed.\n");
+			return -ENOBUFS;
+		}
+		cam->dummy_frame.buffer.length =
+		    PAGE_ALIGN(cam->v2f.fmt.pix.sizeimage);
 	}
 	cam->dummy_frame.buffer.type = V4L2_BUF_TYPE_PRIVATE;
-	cam->dummy_frame.buffer.length =
-	    PAGE_ALIGN(cam->v2f.fmt.pix.sizeimage);
 	cam->dummy_frame.buffer.m.offset = cam->dummy_frame.paddress;
 
 	ipu_clear_irq(cam->ipu, irq);
@@ -285,40 +279,15 @@ static int csi_enc_disabling_tasks(void *private)
 {
 	cam_data *cam = (cam_data *) private;
 	int err = 0;
-	ipu_channel_t chan = (cam->csi == 0) ? CSI_MEM0 : CSI_MEM1;
-#ifdef CONFIG_MXC_MIPI_CSI2
-	void *mipi_csi2_info;
-	int ipu_id;
-	int csi_id;
-#endif
+//	ipu_channel_t chan = (cam->csi == 0) ? CSI_MEM0 : CSI_MEM1;
+	int err2 = 0;
 
-	err = ipu_disable_channel(cam->ipu, chan, true);
+	err = ipu_channel_disable(cam->ipu_chan, true);
 
-	ipu_uninit_channel(cam->ipu, chan);
+	ipu_channel_free(&cam->ipu_chan);
 
-	if (cam->dummy_frame.vaddress != 0) {
-		dma_free_coherent(0, cam->dummy_frame.buffer.length,
-				  cam->dummy_frame.vaddress,
-				  cam->dummy_frame.paddress);
-		cam->dummy_frame.vaddress = 0;
-	}
-
-#ifdef CONFIG_MXC_MIPI_CSI2
-	mipi_csi2_info = mipi_csi2_get_info();
-
-	if (mipi_csi2_info) {
-		if (mipi_csi2_get_status(mipi_csi2_info)) {
-			ipu_id = mipi_csi2_get_bind_ipu(mipi_csi2_info);
-			csi_id = mipi_csi2_get_bind_csi(mipi_csi2_info);
-
-			if (cam->ipu == ipu_get_soc(ipu_id)
-				&& cam->csi == csi_id)
-				mipi_csi2_pixelclk_disable(mipi_csi2_info);
-		}
-	}
-#endif
-
-	return err;
+	err2 = cam_mipi_csi2_disable(cam);
+	return err ? err : err2;
 }
 
 /*!
