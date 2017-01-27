@@ -711,6 +711,8 @@ static int adv7610_video_probe(struct i2c_client *client,
     adv7610_int_device.priv = sensor;
     ret = v4l2_int_device_register(&adv7610_int_device);
 
+	pr_info("HDMI receiver adv7610 is found\n");
+
 	return ret;
 }
 
