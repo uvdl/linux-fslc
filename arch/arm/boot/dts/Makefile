@@ -260,6 +260,7 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6-tinyrexbasic.dtb \
 	imx6-tinyrexlite.dtb \
 	imx6-tinyrexmax.dtb \
+	imx6-tinyrexmax4g.dtb \
 	imx6-tinyrexpro.dtb \
 	imx6-tinyrexultra.dtb \
 	imx6dl-aristainetos_4.dtb \

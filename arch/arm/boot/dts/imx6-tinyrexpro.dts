@@ -41,7 +41,6 @@
 		mclk_source = <0>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_ov5647_mipi>;
-		extended-buffer;
 	};
 };
 

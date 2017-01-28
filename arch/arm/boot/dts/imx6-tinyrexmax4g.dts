@@ -12,11 +12,10 @@
 /dts-v1/;
 
 #include "imx6q.dtsi"
-#include "imx6qp.dtsi"
 #include "imx6qdl-tinyrex.dtsi"
 
 / {
-	model = "Fedevel i.MX6 QuadPlus TinyREX Board";
+	model = "Fedevel i.MX6 Quad TinyREX Board";
 	compatible = "fsl,imx6q-tinyrex", "fsl,imx6q";
 
 	memory: memory {
@@ -70,32 +69,6 @@
 
 &mxcfb4 {
 	status = "disabled";
-};
-
-&pre1 {
-	status = "okay";
-};
-
-&pre2 {
-	status = "okay";
-};
-
-&pre3 {
-	status = "okay";
-};
-
-&pre4 {
-	status = "okay";
-};
-
-&prg1 {
-	memory-region = <&memory>;
-	status = "okay";
-};
-
-&prg2 {
-	memory-region = <&memory>;
-	status = "okay";
 };
 
 &pcie {
