@@ -46,7 +46,7 @@
 #include "mxc_v4l2_capture.h"
 
 #define USE_16BIT
-//#define SUPPORT_1080P
+#define SUPPORT_1080P
 
 /*!
  * Maintains the information on the current state of the sensor.
