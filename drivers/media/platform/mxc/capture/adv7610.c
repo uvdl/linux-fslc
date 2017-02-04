@@ -178,14 +178,14 @@ static void adv7610_hard_reset(void)
 {
 	pr_debug("ADV7610 hard reset\n");
 
-        /* camera reset */
-        gpio_set_value(rst_gpio, 1);
+	/* camera reset */
+	gpio_set_value(rst_gpio, 1);
 
-        gpio_set_value(rst_gpio, 0);
-        msleep(1);
+	gpio_set_value(rst_gpio, 0);
+	msleep(5);
 
-        gpio_set_value(rst_gpio, 1);
-        msleep(5);
+	gpio_set_value(rst_gpio, 1);
+	msleep(5);
 }
 
 
