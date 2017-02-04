@@ -182,14 +182,14 @@ static void adv7610_hard_reset(void)
 {
 	pr_debug("ADV7610 hard reset\n");
 
-        /* camera reset */
-        gpio_set_value(rst_gpio, 1);
+	/* camera reset */
+	gpio_set_value(rst_gpio, 1);
 
-        gpio_set_value(rst_gpio, 0);
-        msleep(1);
+	gpio_set_value(rst_gpio, 0);
+	msleep(5);
 
-        gpio_set_value(rst_gpio, 1);
-        msleep(5);
+	gpio_set_value(rst_gpio, 1);
+	msleep(5);
 }
 
 
@@ -679,6 +679,8 @@ static int adv7610_video_probe(struct i2c_client *client,
     /* This function attaches this structure to the /dev/video<n> device */
     adv7610_int_device.priv = sens;
     ret = v4l2_int_device_register(&adv7610_int_device);
+
+	pr_info("HDMI receiver adv7610 is found\n");
 
 	return ret;
 }
