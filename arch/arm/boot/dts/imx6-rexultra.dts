@@ -53,13 +53,22 @@
 &i2c2 {
 	status = "okay";
 
+	gpio: pca9535@27 {
+		compatible = "nxp,pca9535";
+		reg = <0x27>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_pca9535>;
+		interrupt-parent = <&gpio5>;
+		interrupts = <20 IRQ_TYPE_LEVEL_LOW>;
+	};
+
 	touchscreen: tsc2007@48 {
 		compatible = "ti,tsc2007";
 		reg = <0x48>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_tsc2007>;
 		interrupt-parent = <&gpio6>;
-		interrupts = <9 1>;
+		interrupts = <9 IRQ_TYPE_LEVEL_LOW>;
 		gpios = <&gpio6 9 1>;
 		ti,x-plate-ohms = <500>;
 	};
@@ -67,6 +76,16 @@
 	hdmi: edid@50 {
 		compatible = "fsl,imx6-hdmi-i2c";
 		reg = <0x50>;
+	};
+
+	rtc: pcf8563@51 {
+		compatible = "nxp,pcf8563";
+		reg = <0x51>;
+	};
+
+	eeprom: at24@57 {
+		compatible = "atmel,24c02";
+		reg = <0x57>;
 	};
 };
 

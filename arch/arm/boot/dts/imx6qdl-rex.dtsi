@@ -297,9 +297,15 @@
 			>;
 		};
 
+		pinctrl_pca9535: pca9535 {
+			fsl,pins = <
+				MX6QDL_PAD_CSI0_DATA_EN__GPIO5_IO20	0x00017059 /* INT */
+			>;
+		};
+
 		pinctrl_pcie: pciegrp {
 			fsl,pins = <
-				MX6QDL_PAD_CSI0_DATA_EN__GPIO5_IO20	0x00017059 /* Wake */
+//				MX6QDL_PAD_CSI0_DATA_EN__GPIO5_IO20	0x00017059 /* Wake */
 				MX6QDL_PAD_EIM_A25__GPIO5_IO02		0x00000831 /* Reset */
 			>;
 		};
