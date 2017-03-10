@@ -59,11 +59,25 @@
 	};
 };
 
+&ldb {
+	lvds-channel@0 {
+		crtc = "ipu1-di0";
+	};
+};
+
 &mxcfb1 {
 	status = "okay";
 };
 
 &mxcfb2 {
+	status = "okay";
+};
+
+&mxcfb3 {
+	status = "disabled";
+};
+
+&mxcfb4 {
 	status = "disabled";
 };
 
