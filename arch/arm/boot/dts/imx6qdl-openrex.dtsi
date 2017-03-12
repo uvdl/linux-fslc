@@ -436,7 +436,7 @@
 		clocks = <&clks 201>;
 		VDDA-supply = <&reg_3p3v>;
 		VDDIO-supply = <&reg_3p3v>;
-		VDDD-supply = <&vgen3_reg>;
+		VDDD-supply = <&reg_1p8v>;
 	};
 
 	humidity: sht21@40 {
