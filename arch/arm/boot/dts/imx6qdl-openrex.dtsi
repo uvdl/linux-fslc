@@ -308,21 +308,21 @@
 
 		regulators {
 			sw1a_reg: sw1ab {
-				regulator-min-microvolt = <300000>;
-				regulator-max-microvolt = <1875000>;
+				regulator-min-microvolt = <700000>;
+				regulator-max-microvolt = <1500000>;
 				regulator-boot-on;
 				regulator-always-on;
 				regulator-ramp-delay = <6250>;
 			};
 
 			sw1c_reg: sw1c {
-				regulator-min-microvolt = <300000>;
-				regulator-max-microvolt = <1875000>;
+				regulator-min-microvolt = <700000>;
+				regulator-max-microvolt = <1500000>;
 				regulator-boot-on;
 				regulator-always-on;
 				regulator-ramp-delay = <6250>;
 			};
-
+/*
 			sw2_reg: sw2 {
 				regulator-min-microvolt = <800000>;
 				regulator-max-microvolt = <3300000>;
@@ -410,6 +410,7 @@
 				regulator-boot-on;
 				regulator-always-on;
 			};
+*/
 		};
 	};
 
