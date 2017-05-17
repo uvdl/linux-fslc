@@ -104,18 +104,22 @@
 };
 
 &mxcfb1 {
+	prefetch;
 	status = "okay";
 };
 
 &mxcfb2 {
+	prefetch;
 	status = "okay";
 };
 
 &mxcfb3 {
+	prefetch;
 	status = "disabled";
 };
 
 &mxcfb4 {
+	prefetch;
 	status = "disabled";
 };
 
