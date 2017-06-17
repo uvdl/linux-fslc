@@ -26,7 +26,7 @@
 	sound-sgtl5000 {
 		compatible = "fsl,imx6q-audio-sgtl5000",
 			     "fsl,imx-audio-sgtl5000";
-		model = "imx-audio-sgtl5000";
+		model = "sgtl5000-audio";
 		ssi-controller = <&ssi1>;
 		audio-codec = <&codec>;
 		audio-routing =
