@@ -58,8 +58,8 @@
 		reg = <0x27>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_pca9535>;
-		interrupt-parent = <&gpio5>;
-		interrupts = <20 IRQ_TYPE_LEVEL_LOW>;
+		interrupt-parent = <&gpio6>;
+		interrupts = <16 IRQ_TYPE_LEVEL_LOW>;
 	};
 
 	touchscreen: tsc2007@48 {
