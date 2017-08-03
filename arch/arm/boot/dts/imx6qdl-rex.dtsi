@@ -411,7 +411,6 @@
 
 &gpc {
 	fsl,ldo-bypass = <0>;
-	fsl,wdog-reset = <1>;
 };
 
 &hdmi_audio {
