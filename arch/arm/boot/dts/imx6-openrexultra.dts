@@ -24,6 +24,11 @@
 	};
 };
 
+&cpu0 {
+	arm-supply = <&reg_arm>;
+	soc-supply = <&reg_soc>;
+};
+
 &ecspi3 {
 	spidev30: spi@3 {
 		compatible = "spidev";
