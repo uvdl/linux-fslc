@@ -29,6 +29,12 @@
 		spi-max-frequency = <57600000>;
 		reg = <0>;
 	};
+
+	flash: m25p80@0 {
+		compatible = "sst,sst26vf032b";
+		spi-max-frequency = <20000000>;
+		reg = <1>;
+	};
 };
 
 &i2c1 {
