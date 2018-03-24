@@ -23,14 +23,6 @@
 	};
 };
 
-&ecspi3 {
-	spidev30: spi@3 {
-		compatible = "spidev";
-		spi-max-frequency = <57600000>;
-		reg = <0>;
-	};
-};
-
 &i2c1 {
 	eeprom: at24@50 {
 		compatible = "atmel,24c16";

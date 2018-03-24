@@ -261,6 +261,12 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_ecspi1>;
 	status = "okay";
+
+	spidev10: spi@0 {
+		compatible = "spidev";
+		spi-max-frequency = <57600000>;
+		reg = <0>;
+	};
 };
 
 &ecspi2 {
@@ -269,6 +275,12 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_ecspi2>;
 	status = "okay";
+
+	spidev20: spi@0 {
+		compatible = "spidev";
+		spi-max-frequency = <57600000>;
+		reg = <0>;
+	};
 };
 
 &ecspi3 {
@@ -278,7 +290,13 @@
 	pinctrl-0 = <&pinctrl_ecspi3>;
 	status = "okay";
 
-	flash: m25p80@0 {
+	spidev30: spi@0 {
+		compatible = "spidev";
+		spi-max-frequency = <57600000>;
+		reg = <0>;
+	};
+
+	flash: m25p80@1 {
 		#address-cells = <1>;
 		#size-cells = <1>;
 		compatible = "st,m25p32";
