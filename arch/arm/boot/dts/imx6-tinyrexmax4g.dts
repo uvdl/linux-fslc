@@ -24,9 +24,9 @@
 };
 
 &i2c1 {
-	eeprom: at24@56 {
+	eeprom: at24@57 {
 		compatible = "atmel,24c512";
-		reg = <0x56>;
+		reg = <0x57>;
 	};
 };
 
