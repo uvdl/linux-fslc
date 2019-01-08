@@ -1,0 +1,73 @@
+/*
+ * Copyright (C) 2015-2017 Variscite Ltd.
+ * Copyright (C) 2015-2017 Voipac.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/dts-v1/;
+
+#include "imx6q.dtsi"
+#include "imx6qdl-dart-dt6c.dtsi"
+
+/ {
+	model = "i.MX6 Variscite DART-MX6 on DT6CustomBoard";
+	compatible = "fsl,imx6qdl-dart-dt6c", "fsl,imx6q";
+};
+
+&i2c1 {
+
+	hdmi_edid: edid@50 {
+		compatible = "fsl,imx6-hdmi-i2c";
+		reg = <0x50>;
+	};
+
+	ov564x_mipi: ov564x_mipi@3c {
+		compatible = "ovti,ov5647_mipi_int";
+		reg = <0x3c>;
+		clocks = <&clks 200>;
+		clock-names = "csi_mclk";
+		pwn-gpios = <&gpio3 13 1>;
+		rst-gpios = <&gpio4 10 0>;
+		csi_id = <1>;
+		mclk = <24000000>;
+		mclk_source = <0>;
+	};
+};
+
+&i2c2 {
+	status = "okay";
+};
+
+&i2c3 {
+	/* DS1337 RTC module */
+	rtc@0x68 {
+		compatible = "dallas,ds1337";
+		reg = <0x68>;
+	};
+};
+
+&ldb {
+	status = "disabled";
+};
+
+&mxcfb1 {
+	status = "okay";
+};
+
+&mxcfb2 {
+	status = "disabled";
+};
+
+&mxcfb3 {
+	status = "disabled";
+};
+
+&mxcfb4 {
+	status = "disabled";
+};
