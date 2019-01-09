@@ -17,7 +17,7 @@
 
 / {
 	model = "i.MX6 Variscite DART-MX6 on DT6CustomBoard";
-	compatible = "fsl,imx6qdl-dart-dt6c", "fsl,imx6q";
+	compatible = "fsl,imx6q-dart-dt6c", "fsl,imx6q";
 };
 
 &i2c1 {

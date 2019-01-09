@@ -17,7 +17,7 @@
 
 / {
 	model = "i.MX6 Variscite DART-MX6 on UVDL Iris2 R0";
-	compatible = "fsl,imx6qdl-dart-iris2", "fsl,imx6q";
+	compatible = "fsl,imx6q-dart-iris2", "fsl,imx6q";
 };
 
 &i2c1 {
