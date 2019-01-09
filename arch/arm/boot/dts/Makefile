@@ -254,6 +254,9 @@ dtb-$(CONFIG_SOC_IMX53) += \
 	imx53-tx53-x13x.dtb \
 	imx53-voipac-bsb.dtb
 dtb-$(CONFIG_SOC_IMX6Q) += \
+	imx6-iris2-dt6c.dtb \
+	imx6-iris2-openrexmax.dtb \
+	imx6-iris2-r0.dtb \
 	imx6-openrexbasic.dtb \
 	imx6-openrexmax.dtb \
 	imx6-openrexmax4g.dtb \
